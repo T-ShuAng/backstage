@@ -1,0 +1,115 @@
+
+
+.list{
+
+  .list-table{font-size: 16px;}
+  .list-header{
+    .list-row;
+    height: 46px;
+    background: #6f8fe9;
+    color:#fff;
+    border:none;
+    >th{
+      width: 115px;
+      overflow: auto!important;
+      height: 46px;
+      line-height: 46px;
+    }
+  }
+
+  .list-row{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 1610px;
+    text-align: center;
+    height: 100px;
+    margin-top:4px;
+    border-radius: 6px;
+    background: #fff;
+    vertical-align:middle;
+    box-shadow: 0 0 8px #ccc;
+    color:#666;
+    position: relative;
+    >td,>th{
+      display: inline-block;
+      width: 117px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    .t-long{
+      width: 220px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    img{
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      background: #eee;
+      border-radius: 4px;
+    }
+  }
+  .list-page{
+    padding: 60px 0;
+    text-align: center;
+  }
+
+  th{
+   // .dropdown{height: auto;}
+    &:hover .dropdown {height: auto;}
+  }
+  td{
+    &:hover .dropdown{
+      height:30px;
+    }
+    .dropdown{
+      top: 60px;
+      transition: all 0.4s;
+      background: transparent;
+      span{
+        transition: all 0.4s;
+        display: inline-block;
+        width: 100%;
+        color:#fff;
+        cursor: pointer;
+        background: #6f8fe9;
+        &:hover{
+          background: #f3f5f7;
+          color:#333;
+        }
+      }
+    }
+  }
+
+  .dropdown{
+    height: 0;
+    position: absolute;
+    background: #6f8fe9;
+    width: 120px;
+    z-index: 100;
+    font-weight: normal;
+    top: 46px;
+    line-height: 30px;
+    text-align: center;
+    left: auto;
+    overflow: hidden;
+    box-shadow: 0 3px 8px #ccc;
+    >p{
+      >a{
+        transition: all 0.4s;
+        color:#fff;
+        display:inline-block;
+        box-sizing: border-box;
+        width: 100%;
+        height:100%;
+        padding: 4px 0;
+      }
+      &:hover>a{
+        background: #f3f5f7;
+        color:#333;
+      }
+    }
+  }
+}

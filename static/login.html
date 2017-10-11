@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>login</title>
+  <link rel="stylesheet" href="animate.css">
+  <style>
+
+    body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td { margin:0; padding:0; }
+    body { color:#333; font-size:14px; font-family: Microsoft YaHei,verdana,Tahoma,sans-serif; background-color: #f3f5f7;}
+    td,th,caption { font-size:14px; }
+    h1, h2, h3, h4, h5, h6 { font-weight:normal;}
+    address, caption, cite, code, dfn, strong, th, var i{ font-style:normal; font-weight:normal;}
+    a,a:hover,a:active,a:focus{text-decoration:none;}
+    html,body{width: 100%;height:100%; min-width:1150px;}
+    ol,ul,li {list-style-type:none; }
+    /* css common */
+    .clearfix:after {content: " "; display: block; height:0; clear:both; visibility: hidden;}
+    .clearfix { *zoom:1; }
+    .hidden{display: none;}
+    .show{display: block;}
+    .fl{float: left;}
+    .fr{float: right;}
+    .unfold{width: 50px;height:30px;padding: 5px;cursor: pointer;float: right;margin-top: 5px;line-height: 20px;}
+
+    .container{
+      width: 100%;
+      height:100%;
+      overflow: hidden;
+      position: relative;
+      background-color: #000000;
+    }
+    #space,#Mycanvas{
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .login-box{
+      width: 400px;
+      position: absolute;
+      left: 50%;
+      margin-left: -200px;
+      margin-top:280px;
+    }
+    .login-content{}
+    .login-content input{
+      width:400px;
+      height:60px;
+      border: none;
+      padding: 10px;
+      outline: none;
+      color: #ffffff;
+      font-size: 20px;
+      border-radius: 4px;
+      margin-bottom: 48px;
+      background: rgba(225,225,225,.3);
+      box-shadow: 0 0 3px skyblue inset;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      -o-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    .login-content input:last-of-type{  font-size: 24px  }
+
+
+    .prompt{
+      color: red;
+      font-size: 25px;
+      position: absolute;
+      width: auto;
+      top: 53%;
+      left:23%;
+    }
+  </style>
+</head>
+<body>
+<div class="container" style="background-color: #000">
+  <canvas id="space"></canvas>
+  <canvas id="Mycanvas"></canvas>
+
+  <div class="login-box" id="app">
+    <form class="login-content">
+      <input type="text" placeholder="请输入用户名" v-model="adm_name">
+      <input type="password" placeholder="请输入密码" v-model="adm_word">
+      <input type="button" value="登 录" @click="ajaxPost">
+    </form>
+
+    <transition
+        enter-active-class="animated bounceIn"
+        leave-active-class="animated bounceOutDown"
+    >
+      <p v-if="show" class="prompt">请输入用户名和密码！</p>
+
+    </transition>
+
+  </div>
+</div>
+
+<script src="/jcwyadminphp/view/vue.js"></script>
+<script src="/jcwyadminphp/view/axios.js"></script>
+<script>
+  var vue = new Vue({
+    el: '#app',
+    data: {
+      adm_name: '',
+      adm_word: '',
+      show:false
+    },
+    methods:{
+      ajaxPost:function(){
+
+        if(!this.adm_name||!this.adm_word){
+          this.show = true;
+          setTimeout(function(){
+            vue.show = false;
+          },3000);
+          return;
+        }
+
+        axios.post('/jcwyadminphp/login/login',{
+          name:this.adm_name,
+          pwd:this.adm_word
+        })
+          .then(function(res){
+            console.log(res.data);
+          })
+          .catch(function(err){alert(err.message)});
+      }
+    }
+  })
+</script>
+
+<!--背景canvas1-->
+<script>
+  window.requestAnimFrame = (function(){   return  window.requestAnimationFrame})();
+  var canvas = document.getElementById("space");
+  var c = canvas.getContext("2d");
+
+  var numStars = 1900;
+  var radius = '0.'+Math.floor(Math.random() * 9) + 1  ;
+  var focalLength = canvas.width *2;
+  var warp = 0;
+  var centerX, centerY;
+
+  var stars = [], star;
+  var i;
+
+  var animate = true;
+
+  initializeStars();
+
+  function executeFrame(){
+
+    if(animate)
+      requestAnimFrame(executeFrame);
+    moveStars();
+    drawStars();
+  }
+
+  function initializeStars(){
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+
+    stars = [];
+    for(i = 0; i < numStars; i++){
+      star = {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        z: Math.random() * canvas.width,
+        o: '0.'+Math.floor(Math.random() * 99) + 1
+      };
+      stars.push(star);
+    }
+  }
+
+  function moveStars(){
+    for(i = 0; i < numStars; i++){
+      star = stars[i];
+      star.z--;
+
+      if(star.z <= 0){
+        star.z = canvas.width;
+      }
+    }
+  }
+
+  function drawStars(){
+    var pixelX, pixelY, pixelRadius;
+
+    // Resize to the screen
+    if(canvas.width != window.innerWidth || canvas.width != window.innerWidth){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initializeStars();
+    }
+    if(warp==0){
+      c.fillStyle = "rgba(0,10,20,1)";
+      c.fillRect(0,0, canvas.width, canvas.height);
+    }
+    c.fillStyle = "rgba(209, 255, 255, "+radius+")";
+    for(i = 0; i < numStars; i++){
+      star = stars[i];
+
+      pixelX = (star.x - centerX) * (focalLength / star.z);
+      pixelX += centerX;
+      pixelY = (star.y - centerY) * (focalLength / star.z);
+      pixelY += centerY;
+      pixelRadius = (focalLength / star.z);
+
+      c.beginPath();
+      c.fillRect(pixelX, pixelY, pixelRadius, pixelRadius);
+      //c.arc(pixelX/2,pixelY/2,pixelRadius/2,0,2*Math.PI);
+      c.fillStyle = "rgba(209, 255, 255, "+star.o+")";
+      //color(pixelX/2,pixelY/2,pixelRadius/2);
+      //c.fill();
+      c.stroke();
+
+    }
+  }
+  executeFrame();
+
+</script>
+<!--背景canvas2-->
+<script>
+  //定义画布宽高和生成点的个数
+  var WIDTH = window.innerWidth, HEIGHT = window.innerHeight, POINT = 35;
+
+  var canvas = document.getElementById('Mycanvas');
+  canvas.width = WIDTH;
+  canvas.height = HEIGHT;
+  var context = canvas.getContext('2d');
+
+  context.beginPath();
+
+  function color(x,y,r){
+    var grad  = context.createRadialGradient(x,y,0,x,y,r);
+    grad.addColorStop(0,'rgba(100,208,249,.6)');
+    grad.addColorStop(1,'rgba(100,208,249,0)');
+
+    context.fillStyle = grad;
+  }
+
+
+  context.strokeStyle = 'rgba(225,225,225,.2)';
+  context.strokeWidth = 1;
+  context.fillStyle = 'rgba(100,208,249,.2)';
+  var circleArr = [];
+
+  //线条：开始xy坐标，结束xy坐标，线条透明度
+  function Line (x, y, _x, _y, o) {
+    this.beginX = x;
+    this.beginY = y;
+    this.closeX = _x;
+    this.closeY = _y;
+    this.o = o;
+  }
+  //点：圆心xy坐标，半径，每帧移动xy的距离
+  function Circle (x, y, r, moveX, moveY) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.moveX = moveX;
+    this.moveY = moveY;
+  }
+  //生成max和min之间的随机数
+  function num (max, _min) {
+    var min = arguments[1] || 0;
+    return Math.floor(Math.random()*(max-min+1)+min);
+  }
+  // 绘制原点
+  function drawCricle (cxt, x, y, r, moveX, moveY) {
+    color(x,y,r);
+    var circle = new Circle(x, y, r, moveX, moveY);
+    cxt.beginPath();
+    cxt.arc(circle.x, circle.y, circle.r, 0, 2*Math.PI);
+    cxt.closePath();
+    cxt.fill();
+    return circle;
+  }
+  //绘制线条
+  function drawLine (cxt, x, y, _x, _y, o) {
+    var line = new Line(x, y, _x, _y, o);
+    cxt.beginPath();
+    cxt.strokeStyle = 'rgba(255,255,255,'+o+')';
+    cxt.moveTo(line.beginX, line.beginY);
+    cxt.lineTo(line.closeX, line.closeY);
+    cxt.closePath();
+    cxt.stroke();
+
+  }
+  //每帧绘制
+  function draw () {
+    context.clearRect(0,0,canvas.width, canvas.height);
+    for (var i = 0; i < POINT; i++) {
+      drawCricle(context, circleArr[i].x, circleArr[i].y, circleArr[i].r);
+    }
+    for (var i = 0; i < POINT; i++) {
+      for (var j = 0; j < POINT; j++) {
+        if (i + j < POINT) {
+          var A = Math.abs(circleArr[i+j].x - circleArr[i].x),
+              B = Math.abs(circleArr[i+j].y - circleArr[i].y);
+          var lineLength = Math.sqrt(A*A + B*B);
+          var C = 20/lineLength;
+          var lineOpacity = C > 0.08 ? 0.08 : C;
+          if (lineOpacity > 0) {
+            drawLine(context, circleArr[i].x, circleArr[i].y, circleArr[i+j].x, circleArr[i+j].y, lineOpacity);
+          }
+        }
+      }
+    }
+  }
+  //初始化生成原点
+  function init () {
+    circleArr = [];
+    for (var i = 0; i < POINT; i++) {
+      circleArr.push(drawCricle(context, num(WIDTH), num(HEIGHT), num(15, 2), num(10, -10)/40, num(10, -10)/40));
+    }
+    draw();
+  }
+  //调用执行
+  window.onload = function () {
+    init();
+    setInterval(function () {
+      for (var i = 0; i < POINT; i++) {
+        var cir = circleArr[i];
+        cir.x += cir.moveX;
+        cir.y += cir.moveY;
+        if (cir.x > WIDTH) cir.x = 0;
+        else if (cir.x < 0) cir.x = WIDTH;
+        if (cir.y > HEIGHT) cir.y = 0;
+        else if (cir.y < 0) cir.y = HEIGHT;
+      }
+      draw();
+    }, 10);
+  }
+</script>
+</body>
+</html>

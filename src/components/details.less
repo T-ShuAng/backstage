@@ -1,0 +1,113 @@
+.detail-box{
+  width: 100%;
+  background: #fff;
+  border-radius: 6px;
+  margin-bottom: 30px;
+  padding:20px 0 1px;
+}
+.detail-center{
+  width: 825px;
+  margin: auto;
+  font-size:16px;
+  color:#333;
+}
+//头像
+.detail-portrait{
+  width: 198px;
+  height: 198px;
+  border-radius: 6px;
+  border: 2px dashed #ccc;
+  overflow: hidden;
+  float: right;
+  margin-top: 40px;
+  background: #ededed;
+}
+.detail-portrait>img{
+  width: 100%;
+  height: 100%;
+}
+
+//基础样式
+.detail-center p{
+  line-height: 24px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+.detail-center span{
+  display: inline-block;
+  float: left;
+  max-width:680px;
+}
+.span-title{
+  color:#666;
+  min-width: 64px;
+  text-align: justify;
+  text-align-last: justify;
+  overflow: hidden;
+  >b{
+    display: inline-block;
+    width: 100%;
+  }
+}
+.detail-center-box{
+  margin-bottom: 40px;
+  &:last-of-type{margin-bottom: 0;}
+}
+
+//标题
+.detail-title{
+  margin-top: 40px;
+  line-height: 24px;
+  font-size: 24px;
+  padding-left: 10px;
+  border-left:6px solid #333;
+}
+
+// 带小圆点的span
+.span-time{
+  color:#666;
+  width: 105px;
+  margin-right: 30px;
+}
+.span-time:before{
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #6f8fe9;
+  margin-right: 20px;
+}
+
+//按钮
+.detail-btn{
+  display: block;
+  margin:60px auto;
+  width: 90px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  background: #6f8fe9;
+  border-radius: 3px;
+}
+.detail-btn-see{
+  display: inline-block;
+  margin: auto;
+}
+
+
+//底部表单
+.detail-form{
+  width: 408px;
+  margin: 60px auto 0;
+}
+.detail-form-input{
+  margin-top: 10px;
+  height: 56px;
+  resize: none;
+}
+.detail-form-radio{
+  display: flex;
+  justify-content:space-around;
+}
